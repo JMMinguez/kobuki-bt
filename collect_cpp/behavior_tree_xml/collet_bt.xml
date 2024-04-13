@@ -1,0 +1,17 @@
+<root main_tree_to_execute = "MainTree" >
+    <BehaviorTree ID="MainTree">
+        <Repeat num_cycles="{num_entity}">
+            <SequenceStar name="Search and Pick up Entity">
+                <Action ID="SearchEntity" entity="{entity}"/>
+                <Action ID="NavigateEntity" target="{entity}"/>
+                <Action ID="MakeSound"/>
+                <Sequence>
+                    <Action ID="GetWaypoint" waypoint="{wp}" wp_id="destination_point"/>
+                    <Action ID="Move" goal="{wp}"/>
+                </Sequence>
+            </SequenceStar>
+        </Repeat>
+    </BehaviorTree>
+</root>
+
+
