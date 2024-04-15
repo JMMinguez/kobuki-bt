@@ -47,8 +47,11 @@ public:
 
   static BT::PortsList providedPorts()
   {
-    return BT::PortsList({});
+    return BT::PortsList({
+      BT::InputPort("target")
+    });
   }
+  std::string target;
 
   double distancia, angulo;
   geometry_msgs::msg::Twist vel;

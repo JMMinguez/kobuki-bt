@@ -27,20 +27,21 @@
 namespace collect_cpp
 {
 
-class MakeSound : public BT::SyncActionNode
+class MakeSound : public BT::ActionNodeBase
 {
 public:
-  MakeSound(const std::string& name, const BT::NodeConfiguration& config)
-    : BT::SyncActionNode(name, config) {}
+  MakeSound(const std::string& name, const BT::NodeConfiguration& config);
   
   static BT::PortsList providedPorts()
   {
-    return { BT::InputPort<std::string>("message") };
+    return BT::PortsList({});
   }
 
   BT::NodeStatus tick() override;
+  void halt() override;
 
 private:
+  rclcpp::Node::SharedPtr node_;
   rclcpp::Publisher<kobuki_ros_interfaces::msg::Sound>::SharedPtr sound_pub_;
 
 };

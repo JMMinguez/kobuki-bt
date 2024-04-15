@@ -25,6 +25,17 @@
 namespace collect_cpp
 {
 
+MakeSound::MakeSound(
+  const std::string & xml_tag_name,
+  const BT::NodeConfiguration & conf)
+: BT::ActionNodeBase(xml_tag_name, conf)
+{
+  rclcpp::Node::SharedPtr node;
+  config().blackboard->get("node", node);
+  
+  sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("/commands/sound", 10);
+}
+
 BT::NodeStatus MakeSound::tick()
 {
   auto sound_msg = kobuki_ros_interfaces::msg::Sound();
@@ -35,5 +46,15 @@ BT::NodeStatus MakeSound::tick()
   return BT::NodeStatus::SUCCESS;
 }
 
+void
+MakeSound::halt()
+{
+}
+
 }  // namespace collect_cpp
 
+#include "behaviortree_cpp_v3/bt_factory.h"
+BT_REGISTER_NODES(factory)
+{
+  factory.registerNodeType<collect_cpp::MakeSound>("MakeSound");
+}

@@ -52,9 +52,9 @@ NavigateEntity::NavigateEntity(
 {
   config().blackboard->get("node", node_);
   geometry_msgs::msg::Twist vel;
-  //  Crear publisher velocidad
+  
   vel_pub_ = node_->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-  // Crear subscription transform
+  
   transform_sub_ = node_->create_subscription<tf2_msgs::msg::TFMessage>(
     "/tf", rclcpp::SensorDataQoS().reliable(),
     std::bind(&NavigateEntity::callback, this, _1));
@@ -65,6 +65,8 @@ NavigateEntity::callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr & msg)
 {
   lin_pid_.set_pid(0.6, 0.05, 0.35);
   ang_pid_.set_pid(0.6, 0.08, 0.32);
+  
+  getInput("target", target);
 
   for (int i = 0; i < std::size(msg->transforms); i++) {
     fprintf(
@@ -76,7 +78,7 @@ NavigateEntity::callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr & msg)
 
     try {
       odom2person_msg = tf_buffer_.lookupTransform(
-        "base_link", "entity",
+        "base_link", target,
         tf2::timeFromSec(rclcpp::Time(odom2person_msg.header.stamp).seconds()));
     } catch (tf2::TransformException & ex) {
       return;

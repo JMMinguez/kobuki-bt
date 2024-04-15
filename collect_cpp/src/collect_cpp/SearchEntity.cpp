@@ -68,11 +68,13 @@ SearchEntity::tick()
   }
   int len = std::size(last_detections_->detections);
 
-  for (int i = 0; i < len; i++) {
-    if (last_detections_->detections[i].results[0].hypothesis.class_id == "person") {
-      RCLCPP_INFO(node_->get_logger(), " persona detectada ");
-      return BT::NodeStatus::SUCCESS;
-    }
+  if (len > 0) {
+    std::string class_id = last_detections_->detections[0].results[0].hypothesis.class_id;
+
+    setOutput("entity", class_id);
+
+    RCLCPP_INFO(node_->get_logger(), " entidad detectada: %s ", class_id.c_str());
+    return BT::NodeStatus::SUCCESS;
   }
 
   return BT::NodeStatus::RUNNING;

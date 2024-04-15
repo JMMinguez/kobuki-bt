@@ -42,7 +42,10 @@ public:
 
   static BT::PortsList providedPorts()
   {
-    return BT::PortsList({});
+    return BT::PortsList(
+      {
+        BT::OutputPort("entity")
+      });
   }
 
 private:
