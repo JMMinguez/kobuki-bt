@@ -1,17 +1,37 @@
+<?xml version="1.0"?>
 <root main_tree_to_execute = "MainTree" >
+    <!-- ////////// -->
     <BehaviorTree ID="MainTree">
         <Repeat num_cycles="{num_entity}">
-            <SequenceStar name="Search and Pick up Entity">
-                <Action ID="SearchEntity" entity="{entity}"/>
+            <Sequence name="Search and Pick up Entity">
+                <Condition ID="SearchEntity" entity="{entity}"/>
                 <Action ID="NavigateEntity" target="{entity}"/>
                 <Action ID="MakeSound"/>
                 <Sequence>
-                    <Action ID="GetWaypoint" waypoint="{wp}" wp_id="destination_point"/>
+                    <Action ID="GetWaypoint" waypoint="{wp}" wp_id="destination_point_"/>
                     <Action ID="Move" goal="{wp}"/>
                 </Sequence>
-            </SequenceStar>
+            </Sequence>
         </Repeat>
     </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Condition ID="SearchEntity">
+            <output_port name="entity"/>
+        </Condition>
+        <Action ID="NavigateEntity">
+            <input_port name="target"/>
+        </Action>
+        <Action ID="MakeSound">
+        </Action>
+        <Action ID="GetWayPoint">
+            <output_port name="waypoint"/>
+            <input_port name="wp_id"/>
+        </Action>
+        <Action ID="Move">
+            <input_port name="goal"/>
+        </Action>
+    </TreeNodesModel>
 </root>
 
 
