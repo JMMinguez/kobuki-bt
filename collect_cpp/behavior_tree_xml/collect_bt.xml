@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<root main_tree_to_execute = "MainTree" >
+<root main_tree_to_execute = "BehaviorTree" >
     <!-- ////////// -->
-    <BehaviorTree ID="MainTree">
+    <BehaviorTree ID="BehaviorTree">
         <Repeat num_cycles="{num_entity}">
             <Sequence name="Search and Pick up Entity">
                 <Condition ID="SearchEntity" entity="{entity}"/>

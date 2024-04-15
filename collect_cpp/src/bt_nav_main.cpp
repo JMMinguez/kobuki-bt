@@ -18,6 +18,7 @@
 #include "behaviortree_cpp_v3/behavior_tree.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 #include "behaviortree_cpp_v3/utils/shared_library.h"
+#include "behaviortree_cpp_v3/loggers/bt_zmq_publisher.h"
 
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
@@ -51,6 +52,8 @@ int main(int argc, char * argv[])
   auto blackboard = BT::Blackboard::create();
   blackboard->set("node", node);
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
+  
+  auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
 
   rclcpp::Rate rate(10);
 

@@ -18,6 +18,14 @@ find_package(tf2_msgs REQUIRED)
 find_package(vision_msgs REQUIRED)
 find_package(kobuki_ros_interfaces REQUIRED)
 
+find_package(ZMQ)
+if(ZMQ_FOUND)
+    message(STATUS "ZeroMQ found.")
+    add_definitions(-DZMQ_FOUND)
+else()
+  message(WARNING "ZeroMQ NOT found. Not including PublisherZMQ.")
+endif()
+
 set(CMAKE_CXX_STANDARD 17)
 
 set(dependencies
@@ -63,6 +71,7 @@ endforeach()
 add_executable(navigate src/bt_nav_main.cpp)
 ament_target_dependencies(navigate ${dependencies})
 
+target_link_libraries(navigate_bt_node ${PROJECT_NAME})
 
 install(TARGETS
   ${plugin_libs}
@@ -76,12 +85,10 @@ install(DIRECTORY include/
   DESTINATION include/
 )
 
-install(DIRECTORY
-  behavior_tree_xml
+install(DIRECTORY behavior_tree_xml
+  launch
   DESTINATION share/${PROJECT_NAME}
 )
-
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -90,9 +97,12 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 
+  find_package(ament_cmake_gtest REQUIRED)
+
 endif()
 
 ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(${dependencies})
 
 ament_package()
