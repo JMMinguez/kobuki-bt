@@ -52,7 +52,6 @@ public:
 private:
 };
 
-
 }  // namespace collect_cpp
 
 #endif  // COLLECT_CPP__MOVE_HPP_

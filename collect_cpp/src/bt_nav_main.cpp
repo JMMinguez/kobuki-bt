@@ -52,7 +52,7 @@ int main(int argc, char * argv[])
   auto blackboard = BT::Blackboard::create();
   blackboard->set("node", node);
   BT::Tree tree = factory.createTreeFromFile(xml_file, blackboard);
-  
+
   auto publisher_zmq = std::make_shared<BT::PublisherZMQ>(tree, 10, 1666, 1667);
 
   rclcpp::Rate rate(10);

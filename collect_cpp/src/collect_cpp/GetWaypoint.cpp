@@ -35,7 +35,7 @@ GetWaypoint::GetWaypoint(
 {
   rclcpp::Node::SharedPtr node;
   config().blackboard->get("node", node);
-  
+
   geometry_msgs::msg::PoseStamped wp;
 
   wp.header.frame_id = "map";
@@ -43,13 +43,13 @@ GetWaypoint::GetWaypoint(
 
   wp.pose.position.x = -0.8920753598213196;
   wp.pose.position.y = -1.2171552181243896;
-  myQuaternion.setRPY(0.0,0.0,3.1415); 
-  myQuaternion=myQuaternion.normalize();
+  myQuaternion.setRPY(0.0, 0.0, 3.1415);
+  myQuaternion = myQuaternion.normalize();
   wp.pose.orientation.x = myQuaternion[0];
   wp.pose.orientation.y = myQuaternion[1];
   wp.pose.orientation.z = myQuaternion[2];
   wp.pose.orientation.w = myQuaternion[3];
-  
+
   destination_point_ = wp;
 }
 

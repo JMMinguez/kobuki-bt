@@ -37,13 +37,12 @@
 namespace collect_cpp
 {
 
-
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
 NavigateEntity::NavigateEntity(
   const std::string & xml_tag_name,
-  const BT::NodeConfiguration& conf)
+  const BT::NodeConfiguration & conf)
 : BT::ActionNodeBase(xml_tag_name, conf),
   lin_pid_(0.0, 5.0, 0.0, 0.5),
   ang_pid_(0.0, M_PI / 2, 0.0, 0.5),
@@ -52,9 +51,9 @@ NavigateEntity::NavigateEntity(
 {
   config().blackboard->get("node", node_);
   geometry_msgs::msg::Twist vel;
-  
+
   vel_pub_ = node_->create_publisher<geometry_msgs::msg::Twist>("/cmd_vel", 10);
-  
+
   transform_sub_ = node_->create_subscription<tf2_msgs::msg::TFMessage>(
     "/tf", rclcpp::SensorDataQoS().reliable(),
     std::bind(&NavigateEntity::callback, this, _1));
@@ -65,7 +64,7 @@ NavigateEntity::callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr & msg)
 {
   lin_pid_.set_pid(0.6, 0.05, 0.35);
   ang_pid_.set_pid(0.6, 0.08, 0.32);
-  
+
   getInput("target", target);
 
   for (int i = 0; i < std::size(msg->transforms); i++) {
@@ -87,29 +86,24 @@ NavigateEntity::callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr & msg)
     const auto & x = odom2person_msg.transform.translation.x;
     const auto & y = odom2person_msg.transform.translation.y;
 
-    // Cálculo de distancia y ángulo
     distancia = sqrt(pow(x, 2) + pow(y, 2));
-    angulo = atan2(y, x);;
+    angulo = atan2(y, x);
   }
 }
 
 BT::NodeStatus
 NavigateEntity::tick()
 {
-  if (distancia <= 0.9) {   //distancia menor o igual a un metro
-      vel.linear.x = 0;
-      vel.angular.z = 0;
-      vel_pub_->publish(vel);
-      return BT::NodeStatus::SUCCESS;
-    }
-  else if (distancia >= 1){
-      vel.angular.z = ang_pid_.get_output(angulo);
-
-      vel.linear.x = lin_pid_.get_output(distancia);
-
-      // Se publican velocidades
-      vel_pub_->publish(vel);
-      return BT::NodeStatus::RUNNING;
+  if (distancia <= 0.9) {
+    vel.linear.x = 0;
+    vel.angular.z = 0;
+    vel_pub_->publish(vel);
+    return BT::NodeStatus::SUCCESS;
+  } else if (distancia >= 1) {
+    vel.angular.z = ang_pid_.get_output(angulo);
+    vel.linear.x = lin_pid_.get_output(distancia);
+    vel_pub_->publish(vel);
+    return BT::NodeStatus::RUNNING;
   }
 }
 
@@ -118,10 +112,10 @@ NavigateEntity::halt()
 {
 }
 
+}  // namespace collect_cpp
+
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
   factory.registerNodeType<collect_cpp::NavigateEntity>("NavigateEntity");
 }
-
-}  // namespace collect_cpp

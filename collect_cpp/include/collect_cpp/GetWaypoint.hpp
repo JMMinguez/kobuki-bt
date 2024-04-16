@@ -36,7 +36,8 @@ public:
   explicit GetWaypoint(
     const std::string & xml_tag_name,
     const BT::NodeConfiguration & conf);
-    tf2::Quaternion myQuaternion;
+
+  tf2::Quaternion myQuaternion;
 
   void halt();
   BT::NodeStatus tick();

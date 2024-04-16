@@ -24,27 +24,29 @@ def generate_launch_description():
     pkg_dir = get_package_share_directory('collect_cpp')
 
     convert_2d_3d = Node(package='camera',
-                        executable='detection_2d_to_3d_depth',
-                        output='screen',
-                        remappings=[
-                          ('input_depth', '/camera/depth/image_raw'),
-                          ('input_detection_2d', 'detection_2d'),
-                          ('camera_info', '/camera/camera_info'),
-                          ('output_detection_3d', 'detection_3d'),
-                        ])
-    
+      executable='detection_2d_to_3d_depth',
+      output='screen',
+      remappings=[
+        ('input_depth', '/camera/depth/image_raw'),
+        ('input_detection_2d', 'detection_2d'),
+        ('camera_info', '/camera/camera_info'),
+        ('output_detection_3d', 'detection_3d'),
+      ]
+    )
+
     yolo_cmd = Node(package='camera',
-                        executable='yolo_detection',
-                        output='screen',
-                        remappings=[
-                          ('output_detection_2d', 'detection_2d'),
-                          ('input_detection', '/yolo/detections'),
-                        ])
+      executable='yolo_detection',
+      output='screen',
+      remappings=[
+        ('output_detection_2d', 'detection_2d'),
+        ('input_detection', '/yolo/detections'),
+      ]
+    )
+
     tf_cmd = Node(package='fp_cpp',
-                        executable='p2',
-                        output='screen',
-                        )
-    
+      executable='p2',
+      output='screen',
+    )
 
     ld = LaunchDescription()
     ld.add_action(convert_2d_3d)

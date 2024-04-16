@@ -30,8 +30,8 @@ namespace collect_cpp
 class MakeSound : public BT::ActionNodeBase
 {
 public:
-  MakeSound(const std::string& name, const BT::NodeConfiguration& config);
-  
+  MakeSound(const std::string & name, const BT::NodeConfiguration & config);
+
   static BT::PortsList providedPorts()
   {
     return BT::PortsList({});

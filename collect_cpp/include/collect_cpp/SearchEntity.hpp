@@ -37,7 +37,7 @@ public:
     const BT::NodeConfiguration & conf);
 
   BT::NodeStatus tick();
-  
+
   void callback(const vision_msgs::msg::Detection3DArray::SharedPtr msg);
 
   static BT::PortsList providedPorts()
@@ -49,20 +49,18 @@ public:
   }
 
 private:
-
   rclcpp::Node::SharedPtr node_;
 
   vision_msgs::msg::Detection3DArray::SharedPtr last_detections_;
 
   rclcpp::Subscription<vision_msgs::msg::Detection3DArray>::SharedPtr detection3d_sub_;
-  
+
   std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
 
   static constexpr float SPEED_ANGULAR = 0.3f;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_publisher_;
 };
-
 
 }  // namespace collect_cpp
 

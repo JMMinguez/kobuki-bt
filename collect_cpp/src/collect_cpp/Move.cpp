@@ -42,7 +42,6 @@ Move::on_success()
   return BT::NodeStatus::SUCCESS;
 }
 
-
 }  // namespace collect_cpp
 
 BT_REGISTER_NODES(factory)

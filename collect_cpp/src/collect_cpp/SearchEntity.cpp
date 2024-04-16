@@ -28,17 +28,16 @@
 namespace collect_cpp
 {
 
-
 using namespace std::placeholders;
 using namespace std::chrono_literals;
 
 SearchEntity::SearchEntity(
   const std::string & xml_tag_name,
-  const BT::NodeConfiguration& conf)
+  const BT::NodeConfiguration & conf)
 : BT::ConditionNode(xml_tag_name, conf)
 {
   config().blackboard->get("node", node_);
-  
+
   detection3d_sub_ = node_->create_subscription<vision_msgs::msg::Detection3DArray>(
     "detection_3d", 10,
     std::bind(&SearchEntity::callback, this, _1));
@@ -80,10 +79,10 @@ SearchEntity::tick()
   return BT::NodeStatus::RUNNING;
 }
 
+}  // namespace collect_cpp
+
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory)
 {
   factory.registerNodeType<collect_cpp::SearchEntity>("SearchEntity");
 }
-
-}  // namespace collect_cpp

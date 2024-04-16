@@ -42,14 +42,15 @@ public:
 
   BT::NodeStatus tick();
   void halt();
-  
+
   void callback(const tf2_msgs::msg::TFMessage::ConstSharedPtr & msg);
 
   static BT::PortsList providedPorts()
   {
-    return BT::PortsList({
-      BT::InputPort("target")
-    });
+    return BT::PortsList(
+      {
+        BT::InputPort("target")
+      });
   }
   std::string target;
 
@@ -64,8 +65,6 @@ private:
   tf2::BufferCore tf_buffer_;
   tf2_ros::TransformListener tf_listener_;
 };
-
-
 
 }  // namespace collect_cpp
 

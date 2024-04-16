@@ -32,7 +32,7 @@ MakeSound::MakeSound(
 {
   rclcpp::Node::SharedPtr node;
   config().blackboard->get("node", node);
-  
+
   sound_pub_ = node_->create_publisher<kobuki_ros_interfaces::msg::Sound>("/commands/sound", 10);
 }
 
